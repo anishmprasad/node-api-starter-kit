@@ -1,19 +1,19 @@
-const express = require('express');
-const cors = require('cors');
+/*================================================================
+	Server side Routing
+	Route Declarations
+=================================================================*/
 
-const app = express();
+/* ========================================================== 
+Internal App Modules/Packages Required
+============================================================ */
+var todoRoutes = require('./routes'); //Exchange routes
 
-app.use(cors());
-app.use('/', (req, res, next) => {
-	res.status(200).json({
-		name: 'anish'
-	});
-});
-
-// mongoose.connect('mongodb://localhost/test', { useNewUrlParser: true });
-
-// start a server on port 8080
-const server = app.listen(8080, () => {
-	const port = server.address().port;
-	console.log('App listening on port', port);
-});
+module.exports = function(app) {
+	/*================================================================
+	ROUTES
+	=================================================================*/
+	app.post('/api/todos', todoRoutes.createTodo);
+	app.get('/api/todos', todoRoutes.getTodos);
+	app.put('/api/todos/:todo_id', todoRoutes.updateTodo);
+	app.delete('/api/todos/:todo_id', todoRoutes.deleteTodo);
+};
