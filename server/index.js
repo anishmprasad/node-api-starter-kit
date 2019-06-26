@@ -9,3 +9,9 @@ app.use('/', (req, res, next) => {
 		name: 'anish'
 	});
 });
+
+// start a server on port 8080
+const server = app.listen(8080, () => {
+	const port = server.address().port;
+	console.log('App listening on port', port);
+});
