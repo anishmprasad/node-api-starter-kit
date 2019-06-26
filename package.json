@@ -1,10 +1,9 @@
 {
-	"name": "api-starter-kit",
+	"name": "node-api-starter-kit",
 	"version": "1.0.0",
-	"description": "a simple node server for expose apis",
+	"description": "A simple node server for expose APIs",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
 		"start": "nodemon server.js"
 	},
 	"repository": {
