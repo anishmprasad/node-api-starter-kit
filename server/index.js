@@ -10,6 +10,8 @@ app.use('/', (req, res, next) => {
 	});
 });
 
+// mongoose.connect('mongodb://localhost/test', { useNewUrlParser: true });
+
 // start a server on port 8080
 const server = app.listen(8080, () => {
 	const port = server.address().port;
