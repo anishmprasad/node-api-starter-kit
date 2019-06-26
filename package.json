@@ -1,0 +1,26 @@
+{
+	"name": "api-starter-kit",
+	"version": "1.0.0",
+	"description": "a simple node server for expose apis",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/anishmprasad/node-api-starter-kit.git"
+	},
+	"keywords": [
+		"node",
+		"api"
+	],
+	"author": "anish.m.prasad",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/anishmprasad/node-api-starter-kit/issues"
+	},
+	"homepage": "https://github.com/anishmprasad/node-api-starter-kit#readme",
+	"devDependencies": {
+		"nodemon": "^1.19.1"
+	}
+}
