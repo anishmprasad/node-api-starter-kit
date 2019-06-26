@@ -4,7 +4,8 @@
 	"description": "a simple node server for expose apis",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "nodemon server.js"
 	},
 	"repository": {
 		"type": "git",
@@ -22,5 +23,9 @@
 	"homepage": "https://github.com/anishmprasad/node-api-starter-kit#readme",
 	"devDependencies": {
 		"nodemon": "^1.19.1"
+	},
+	"dependencies": {
+		"cors": "^2.8.5",
+		"express": "^4.17.1"
 	}
 }
