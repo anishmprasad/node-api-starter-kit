@@ -28,23 +28,26 @@ module.exports = {
 
 		// get a pg client from the connection pool
 		pool.connect(function(err, client, done) {
-			console.log(query);
-			client.query(query.INSERT, [data.text, data.done]);
+			console.log(client);
+			if (err) {
+				console.log('Can not connect to the DB' + err);
+			}
+			if (client) {
+				client.query(query.INSERT, [data.text, data.done]);
 
-			var query = client.query(query.GETALLTODOBYASC);
+				var query = client.query(query.GETALLTODOBYASC);
 
-			//can stream row results back 1 at a time
-			query.on('row', function(row) {
-				results.push(row);
-			});
+				//can stream row results back 1 at a time
+				query.on('row', function(row) {
+					results.push(row);
+				});
 
-			//fired after last row is emitted
-			query.on('end', function() {
-				client.end();
-				return res.json(results); // return all todos in JSON format
-			});
-
-			if (err) console.log(err);
+				//fired after last row is emitted
+				query.on('end', function() {
+					client.end();
+					return res.json(results); // return all todos in JSON format
+				});
+			}
 		});
 	},
 
@@ -54,24 +57,27 @@ module.exports = {
 	//Get all todos in the database
 	getTodos: function(req, res) {
 		results = [];
-
+		// console.log(pool);
 		// get a pg client from the connection pool
 		pool.connect(function(err, client, done) {
-			var query = client.query(query.GETALLTODOBYASC);
+			// console.log(err, client, done);
+			if (err) {
+				console.log('Can not connect to the DB' + err);
+			}
+			if (client) {
+				var query = client.query(query.GETALLTODOBYASC);
 
-			//can stream row results back 1 at a time
-			query.on('row', function(row) {
-				results.push(row);
-			});
+				//can stream row results back 1 at a time
+				query.on('row', function(row) {
+					results.push(row);
+				});
 
-			//fired after last row is emitted
-			query.on('end', function() {
-				client.end();
-				return res.json(results); // return all todos in JSON format
-			});
-
-			//console.log()
-			if (err) console.log(err);
+				//fired after last row is emitted
+				query.on('end', function() {
+					client.end();
+					return res.json(results); // return all todos in JSON format
+				});
+			}
 		});
 	},
 
@@ -92,22 +98,24 @@ module.exports = {
 
 		// get a pg client from the connection pool
 		pool.connect(function(err, client, done) {
-			client.query(query.UPDATE, [data.text, data.done, id]);
-			var query = client.query(query.GETALLTODOBYASC);
+			if (err) {
+				console.log('Can not connect to the DB' + err);
+			}
+			if (client) {
+				client.query(query.UPDATE, [data.text, data.done, id]);
+				var query = client.query(query.GETALLTODOBYASC);
 
-			//can stream row results back 1 at a time
-			query.on('row', function(row) {
-				results.push(row);
-			});
+				//can stream row results back 1 at a time
+				query.on('row', function(row) {
+					results.push(row);
+				});
 
-			//fired after last row is emitted
-			query.on('end', function() {
-				client.end();
-				return res.json(results); // return all todos in JSON format
-			});
-
-			//console.log()
-			if (err) console.log(err);
+				//fired after last row is emitted
+				query.on('end', function() {
+					client.end();
+					return res.json(results); // return all todos in JSON format
+				});
+			}
 		});
 	},
 
@@ -122,23 +130,25 @@ module.exports = {
 
 		// get a pg client from the connection pool
 		pool.connect(function(err, client, done) {
-			client.query(query.DELETE, [id]);
+			if (err) {
+				console.log('Can not connect to the DB' + err);
+			}
+			if (client) {
+				client.query(query.DELETE, [id]);
 
-			var query = client.query(query.UPDATE);
+				var query = client.query(query.UPDATE);
 
-			//can stream row results back 1 at a time
-			query.on('row', function(row) {
-				results.push(row);
-			});
+				//can stream row results back 1 at a time
+				query.on('row', function(row) {
+					results.push(row);
+				});
 
-			//fired after last row is emitted
-			query.on('end', function() {
-				client.end();
-				return res.json(results); // return all todos in JSON format
-			});
-
-			//console.log()
-			if (err) console.log(err);
+				//fired after last row is emitted
+				query.on('end', function() {
+					client.end();
+					return res.json(results); // return all todos in JSON format
+				});
+			}
 		});
 	}
 };
