@@ -9,10 +9,9 @@ PostgreSQL DB table name is: 'todos'
 =================================================================*/
 
 var pool = require('../config');
-
-const query = require('../query');
+var query = require('../query');
 var results = [];
-
+// console.log(query);
 module.exports = {
 	/*================================================================
 	CREATE - $http post
@@ -29,6 +28,7 @@ module.exports = {
 
 		// get a pg client from the connection pool
 		pool.connect(function(err, client, done) {
+			console.log(query);
 			client.query(query.INSERT, [data.text, data.done]);
 
 			var query = client.query(query.GETALLTODOBYASC);

@@ -5,12 +5,11 @@ var bodyParser = require('body-parser'); //needed to read HTTP packet content us
 var path = require('path');
 var http = require('http');
 // var colours = require('colors');
-
-const app = express();
-app.use(logger('dev'));
-
 var routes = require('./server');
 
+const app = express();
+
+app.use(logger('dev'));
 app.use(cors());
 app.use(bodyParser.json());
 
