@@ -30,23 +30,33 @@ module.exports = {
 		pool.connect(function(err, client, done) {
 			console.log(client);
 			if (err) {
-				console.log('Can not connect to the DB' + err);
+				console.log('Can not connect to the DB ' + err);
 			}
 			if (client) {
+				console.log(query);
 				client.query(query.INSERT, [data.text, data.done]);
 
-				var query = client.query(query.GETALLTODOBYASC);
+				// var query = client.query(query.GETALLTODOBYASC);
 
-				//can stream row results back 1 at a time
-				query.on('row', function(row) {
-					results.push(row);
+				client.query(this.GETALLTODOBYASC, function(err, result) {
+					done();
+					if (err) {
+						console.log(err);
+						res.status(400).send(err);
+					}
+					res.status(200).send(result);
 				});
 
-				//fired after last row is emitted
-				query.on('end', function() {
-					client.end();
-					return res.json(results); // return all todos in JSON format
-				});
+				// //can stream row results back 1 at a time
+				// query.on('row', function(row) {
+				// 	results.push(row);
+				// });
+
+				// //fired after last row is emitted
+				// query.on('end', function() {
+				// 	client.end();
+				// 	return res.json(results); // return all todos in JSON format
+				// });
 			}
 		});
 	},
@@ -57,28 +67,44 @@ module.exports = {
 	//Get all todos in the database
 	getTodos: function(req, res) {
 		results = [];
-		// console.log(pool);
+		// console.log(query);
 		// get a pg client from the connection pool
-		pool.connect(function(err, client, done) {
-			// console.log(err, client, done);
-			if (err) {
-				console.log('Can not connect to the DB' + err);
-			}
-			if (client) {
-				var query = client.query(query.GETALLTODOBYASC);
+		pool.connect(
+			function(err, client, done) {
+				// console.log(err, client, done);
+				// console.log('this', this);
 
-				//can stream row results back 1 at a time
-				query.on('row', function(row) {
-					results.push(row);
-				});
+				if (err) {
+					console.log('Can not connect to the DB ' + err);
+				}
+				if (client) {
+					// var query = client.query(this.GETALLTODOBYASC).then(response => {
+					// 	console.log('response', response);
+					// });
+					// console.log('query', query);
 
-				//fired after last row is emitted
-				query.on('end', function() {
-					client.end();
-					return res.json(results); // return all todos in JSON format
-				});
-			}
-		});
+					//can stream row results back 1 at a time
+					// query.on('row', function(row) {
+					// 	results.push(row);
+					// });
+
+					// //fired after last row is emitted
+					// query.on('end', function() {
+					// 	client.end();
+					// 	return res.json(results); // return all todos in JSON format
+					// });
+
+					client.query(this.GETALLTODOBYASC, function(err, result) {
+						done();
+						if (err) {
+							console.log(err);
+							res.status(400).send(err);
+						}
+						res.status(200).send(result);
+					});
+				}
+			}.bind(query)
+		);
 	},
 
 	/*================================================================
@@ -99,7 +125,7 @@ module.exports = {
 		// get a pg client from the connection pool
 		pool.connect(function(err, client, done) {
 			if (err) {
-				console.log('Can not connect to the DB' + err);
+				console.log('Can not connect to the DB ' + err);
 			}
 			if (client) {
 				client.query(query.UPDATE, [data.text, data.done, id]);
@@ -131,7 +157,7 @@ module.exports = {
 		// get a pg client from the connection pool
 		pool.connect(function(err, client, done) {
 			if (err) {
-				console.log('Can not connect to the DB' + err);
+				console.log('Can not connect to the DB ' + err);
 			}
 			if (client) {
 				client.query(query.DELETE, [id]);

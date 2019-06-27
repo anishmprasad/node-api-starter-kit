@@ -6,8 +6,8 @@ Database Connection Settings
 var pg = require('pg');
 const config = {
 	user: 'postgres',
-	database: 'YOURDBNAME',
-	password: 'YOURPASSWORD',
+	database: 'node-api-starter-kit',
+	password: 'admin',
 	port: 5432
 };
 
