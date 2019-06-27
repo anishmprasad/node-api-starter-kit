@@ -8,10 +8,8 @@ is Queried appropriately.
 PostgreSQL DB table name is: 'todos'
 =================================================================*/
 
-var pg = require('pg');
+var pool = require('../config');
 
-var database = require('../config');
-var conString = database.conString;
 const query = require('../query');
 var results = [];
 
@@ -30,7 +28,7 @@ module.exports = {
 		};
 
 		// get a pg client from the connection pool
-		pg.connect(conString, function(err, client, done) {
+		pool.connect(function(err, client, done) {
 			client.query(query.INSERT, [data.text, data.done]);
 
 			var query = client.query(query.GETALLTODOBYASC);
@@ -58,7 +56,7 @@ module.exports = {
 		results = [];
 
 		// get a pg client from the connection pool
-		pg.connect(conString, function(err, client, done) {
+		pool.connect(function(err, client, done) {
 			var query = client.query(query.GETALLTODOBYASC);
 
 			//can stream row results back 1 at a time
@@ -93,7 +91,7 @@ module.exports = {
 		console.log('ID= ' + id); //TEST
 
 		// get a pg client from the connection pool
-		pg.connect(conString, function(err, client, done) {
+		pool.connect(function(err, client, done) {
 			client.query(query.UPDATE, [data.text, data.done, id]);
 			var query = client.query(query.GETALLTODOBYASC);
 
@@ -123,7 +121,7 @@ module.exports = {
 		console.log('id= ' + id); //TEST
 
 		// get a pg client from the connection pool
-		pg.connect(conString, function(err, client, done) {
+		pool.connect(function(err, client, done) {
 			client.query(query.DELETE, [id]);
 
 			var query = client.query(query.UPDATE);

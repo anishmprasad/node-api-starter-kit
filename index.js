@@ -1,13 +1,10 @@
 const express = require('express');
 const cors = require('cors');
-/* ========================================================== 
-External Modules/Packages Required
-============================================================ */
 var logger = require('morgan'); //logger middleware
 var bodyParser = require('body-parser'); //needed to read HTTP packet content using req.body etc
 var path = require('path');
 var http = require('http');
-var colours = require('colors');
+// var colours = require('colors');
 
 const app = express();
 app.use(logger('dev'));
