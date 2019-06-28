@@ -22,43 +22,52 @@ module.exports = {
 
 		//Data to be saved to the DB - taken from $http request packet
 		var data = {
-			text: req.body.text,
+			text: req.body.text || 'sample text',
 			done: false
 		};
 
 		// get a pg client from the connection pool
-		pool.connect(function(err, client, done) {
-			console.log(client);
-			if (err) {
-				console.log('Can not connect to the DB ' + err);
-			}
-			if (client) {
-				console.log(query);
-				client.query(query.INSERT, [data.text, data.done]);
+		pool.connect(
+			function(err, client, done) {
+				console.log({ data });
+				if (err) {
+					console.log('Can not connect to the DB ' + err);
+				}
+				if (client) {
+					console.log(req.body);
+					client.query(this.INSERT, [data.text, data.done], function(err, result) {
+						done();
+						if (err) {
+							console.log(err);
+							res.status(400).send(err);
+						}
+						res.status(200).send(result);
+					});
 
-				// var query = client.query(query.GETALLTODOBYASC);
+					// var query = client.query(query.GETALLTODOBYASC);
 
-				client.query(this.GETALLTODOBYASC, function(err, result) {
-					done();
-					if (err) {
-						console.log(err);
-						res.status(400).send(err);
-					}
-					res.status(200).send(result);
-				});
+					client.query(this.GETALLTODOBYASC, function(err, result) {
+						done();
+						if (err) {
+							console.log(err);
+							res.status(400).send(err);
+						}
+						res.status(200).send(result);
+					});
 
-				// //can stream row results back 1 at a time
-				// query.on('row', function(row) {
-				// 	results.push(row);
-				// });
+					// //can stream row results back 1 at a time
+					// query.on('row', function(row) {
+					// 	results.push(row);
+					// });
 
-				// //fired after last row is emitted
-				// query.on('end', function() {
-				// 	client.end();
-				// 	return res.json(results); // return all todos in JSON format
-				// });
-			}
-		});
+					// //fired after last row is emitted
+					// query.on('end', function() {
+					// 	client.end();
+					// 	return res.json(results); // return all todos in JSON format
+					// });
+				}
+			}.bind(query)
+		);
 	},
 
 	/*================================================================
@@ -123,26 +132,28 @@ module.exports = {
 		console.log('ID= ' + id); //TEST
 
 		// get a pg client from the connection pool
-		pool.connect(function(err, client, done) {
-			if (err) {
-				console.log('Can not connect to the DB ' + err);
-			}
-			if (client) {
-				client.query(query.UPDATE, [data.text, data.done, id]);
-				var query = client.query(query.GETALLTODOBYASC);
+		pool.connect(
+			function(err, client, done) {
+				if (err) {
+					console.log('Can not connect to the DB ' + err);
+				}
+				if (client) {
+					client.query(query.UPDATE, [data.text, data.done, id]);
+					var query = client.query(query.GETALLTODOBYASC);
 
-				//can stream row results back 1 at a time
-				query.on('row', function(row) {
-					results.push(row);
-				});
+					//can stream row results back 1 at a time
+					query.on('row', function(row) {
+						results.push(row);
+					});
 
-				//fired after last row is emitted
-				query.on('end', function() {
-					client.end();
-					return res.json(results); // return all todos in JSON format
-				});
-			}
-		});
+					//fired after last row is emitted
+					query.on('end', function() {
+						client.end();
+						return res.json(results); // return all todos in JSON format
+					});
+				}
+			}.bind(query)
+		);
 	},
 
 	/*================================================================
@@ -155,26 +166,28 @@ module.exports = {
 		console.log('id= ' + id); //TEST
 
 		// get a pg client from the connection pool
-		pool.connect(function(err, client, done) {
-			if (err) {
-				console.log('Can not connect to the DB ' + err);
-			}
-			if (client) {
-				client.query(query.DELETE, [id]);
+		pool.connect(
+			function(err, client, done) {
+				if (err) {
+					console.log('Can not connect to the DB ' + err);
+				}
+				if (client) {
+					client.query(query.DELETE, [id]);
 
-				var query = client.query(query.UPDATE);
+					var query = client.query(query.UPDATE);
 
-				//can stream row results back 1 at a time
-				query.on('row', function(row) {
-					results.push(row);
-				});
+					//can stream row results back 1 at a time
+					query.on('row', function(row) {
+						results.push(row);
+					});
 
-				//fired after last row is emitted
-				query.on('end', function() {
-					client.end();
-					return res.json(results); // return all todos in JSON format
-				});
-			}
-		});
+					//fired after last row is emitted
+					query.on('end', function() {
+						client.end();
+						return res.json(results); // return all todos in JSON format
+					});
+				}
+			}.bind(query)
+		);
 	}
 };
