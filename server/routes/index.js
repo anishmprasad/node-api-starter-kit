@@ -36,23 +36,25 @@ module.exports = {
 				if (client) {
 					console.log(req.body);
 					client.query(this.INSERT, [data.text, data.done], function(err, result) {
+						console.log('INSERT', result);
 						done();
 						if (err) {
 							console.log(err);
-							res.status(400).send(err);
+							return res.status(400).send(err);
 						}
-						res.status(200).send(result);
+						return res.status(200).send(result);
 					});
 
 					// var query = client.query(query.GETALLTODOBYASC);
 
 					client.query(this.GETALLTODOBYASC, function(err, result) {
+						console.log('GETALLTODOBYASC', result);
 						done();
 						if (err) {
 							console.log(err);
-							res.status(400).send(err);
+							return res.status(400).send(err);
 						}
-						res.status(200).send(result);
+						return res.status(200).send(result);
 					});
 
 					// //can stream row results back 1 at a time
@@ -191,3 +193,17 @@ module.exports = {
 		);
 	}
 };
+
+// controller.save = (req, res) => {
+// 	pool.query(
+// 		'INSERT INTO recipes(name, ingredients, directions) VALUES ($1, $2,$3)',
+// 		[req.body.name, req.body.ingredients, req.body.directions],
+// 		function(err, resp) {
+// 			if (err) {
+// 				console.log(err);
+// 			} else {
+// 				return res.redirect('/');
+// 			}
+// 		}
+// 	);
+// };
