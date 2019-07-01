@@ -54,7 +54,7 @@ module.exports = {
 							console.log(err);
 							return res.status(400).send(err);
 						}
-						return res.status(200).send(result);
+						return res.status(200).send(result.rows);
 					});
 
 					// //can stream row results back 1 at a time
@@ -111,7 +111,7 @@ module.exports = {
 							console.log(err);
 							res.status(400).send(err);
 						}
-						res.status(200).send(result);
+						res.status(200).send(result.rows);
 					});
 				}
 			}.bind(query)
